@@ -39,7 +39,7 @@ public Action Cmd_AcceptGang(int client, int args)
 	GetConVarTable(TABLE_GANG);
 	
 	char query[200];
-	Handle queryH = INVALID_HANDLE;
+	Handle queryH = null;
 	int currentCount;
 	
 	currentCount = RetrieveInt(TABLE_GANG, "membercount", GID[client]);
@@ -47,7 +47,7 @@ public Action Cmd_AcceptGang(int client, int args)
 	Format(query, sizeof(query), sQuery_AcceptInvite, tableGang, (currentCount + 1), GID[client]);
 	queryH = SQL_Query(dbConn, query);
 	
-	if(queryH == INVALID_HANDLE)
+	if(queryH == null)
 	{
 		PrintToServer("[DrugMoney] SQL-ERROR: Could not update membercount for gangid %d.", GID[client]);
 	}

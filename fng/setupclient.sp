@@ -42,7 +42,7 @@ public void OnClientPostAdminCheck(int client)
 		/* These Variables must be Local */
 		// Setup the information needed to send Queries to MYSQL
 		char query[255];
-		Handle querySend = INVALID_HANDLE;
+		Handle querySend = null;
 		
 		// Obtain SteamID, Players Name and MySQL Table
 		GetClientName(client, pName[client], sizeof(pName));	// Gets Players Name
@@ -82,7 +82,7 @@ public void OnClientPostAdminCheck(int client)
 			
 			PrintToServer("[Database] SQL-SUCCESS[001]: Insert information for player %s.", pName[client]);
 			
-			if(querySend == INVALID_HANDLE)
+			if(querySend == null)
 			{
 				PrintToServer("[Database] SQL-ERROR[002]: Failed to insert information for player %s.", pName[client]);
 			}
@@ -183,7 +183,7 @@ public Action TimerCB_RetryLoadClient(Handle hTimer, any iUserID)
 void UpdateClanTag(int client)
 {
 	char query[255];
-	Handle querySend = INVALID_HANDLE;
+	Handle querySend = null;
 	//decl String:szTag[36];
 	//new String:clantag;
 	

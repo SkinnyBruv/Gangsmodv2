@@ -23,7 +23,7 @@ public Action Cmd_InviteGang(int client, int args)
 		PrintToChat(client, "[SM] Lets do this");
 		
 		char query[255];
-		Handle querySend = INVALID_HANDLE;
+		Handle querySend = null;
 	
 		GetClientAuthId(client, AuthId_Steam3, SID[client], sizeof(SID));
 		

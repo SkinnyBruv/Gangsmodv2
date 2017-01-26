@@ -32,7 +32,7 @@ public void OnMapStart()
 	
 	dbConn = SQL_Connect(tb_connValue, true, dbError, sizeof(dbError)); /* Name of dbConenction in database.cfg */
 	
-	if  (dbConn == INVALID_HANDLE)
+	if  (dbConn == null)
 	{
 		PrintToServer("[FNG Database] - Could not connect to database: %s", dbError);
 		CloseHandle(dbConn);
@@ -44,7 +44,7 @@ public void OnMapStart()
 		PrintToServer("[FNG Database] - Connected Successfully!");
 	}
 	
-	if (cv_jb_gangs_version == INVALID_HANDLE)
+	if (cv_jb_gangs_version == null)
 	{
 		return;
 	}
@@ -54,7 +54,7 @@ public void OnMapStart()
 		PrintToChatAll("[SM] This server is created by SkinnyBruv.");
 	}
 	
-	if (cv_jb_gangs == INVALID_HANDLE)
+	if (cv_jb_gangs == null)
 	{
 		return;
 	}

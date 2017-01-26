@@ -32,7 +32,7 @@ public Action Cmd_CreateGang(int client, int args)
 			
 			// Setup MySQL
 			char query[200];
-			Handle querySend = INVALID_HANDLE;
+			Handle querySend = null;
 			char arg1[80];
 			
 			// Obtain Table Values

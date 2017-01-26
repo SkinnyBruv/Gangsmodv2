@@ -31,7 +31,7 @@ public Action Cmd_LeaveGang(int client, int args)
 	
 	//new slot = FindGangSlot(client);
 	char query[200];
-	Handle queryH = INVALID_HANDLE;
+	Handle queryH = null;
 	
 	GetConVarTable(TABLE_GANG);
 	
@@ -40,7 +40,7 @@ public Action Cmd_LeaveGang(int client, int args)
 		Format(query, sizeof(query), sQuery_LeaveGang, tableGang, GID[client]);
 		queryH = SQL_Query(dbConn, query);
 		
-		if(queryH == INVALID_HANDLE)
+		if(queryH == null)
 		{
 			PrintToServer("[DrugMoney] SQL-ERROR[006]: Failed to delete gangid row %d.", GID[client]);
 			PrintToChat(client, "[SM] Failed to delete your gang.");

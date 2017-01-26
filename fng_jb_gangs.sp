@@ -152,7 +152,7 @@ char sQuery_SetVip[] = "UPDATE %s SET vip = '1' WHERE steamid = '%s';";
 
 
 /* Handles */
-Handle dbConn = INVALID_HANDLE;	// Database Connection Handle
+Handle dbConn = null;	// Database Connection Handle
 char dbError[255];	// Database Error Handle
 
 
@@ -200,17 +200,17 @@ int gInvite[255];	// GangInvite
 
 
 /* ConVars Setup */
-Handle cv_dbConnTable = INVALID_HANDLE;
+Handle cv_dbConnTable = null;
 char tb_connValue[70];	//tb = Table
-Handle cv_dbPlayerTable = INVALID_HANDLE;
+Handle cv_dbPlayerTable = null;
 char tablePlayer[70];	//tb = Table
-Handle cv_dbGangTable = INVALID_HANDLE;
+Handle cv_dbGangTable = null;
 char tableGang[70];	//tb = Table
 
-//Handle cv_SetVIP = INVALID_HANDLE;
+//Handle cv_SetVIP = null;
 
-Handle cv_jb_gangs = INVALID_HANDLE;
-Handle cv_jb_gangs_version = INVALID_HANDLE;
+Handle cv_jb_gangs = null;
+Handle cv_jb_gangs_version = null;
 
 
 /* MYSQL Table Definitions */
@@ -218,7 +218,7 @@ Handle cv_jb_gangs_version = INVALID_HANDLE;
 #define TABLE_PLAYER		2
 #define TABLE_GANG		3
 
-//Handle cv_pCreateCost = INVALID_HANDLE;
+//Handle cv_pCreateCost = null;
 
 
 /* File Includes */
