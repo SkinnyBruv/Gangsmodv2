@@ -63,7 +63,7 @@ public void OnClientPostAdminCheck(int client)
 			gRank[client] = SQL_FetchInt(querySend, 2);	// GangRank
 			gVIP[client] = SQL_FetchInt(querySend, 3);	// VIP
 			
-			PrintToServer("[Database] SQL-SUCCESS[000]: Gathered information for player %s.", pName[client]);
+			PrintToServer("[Database] SQL-SUCCESS[000]: Gathered information for player %N.", client);
 			
 			// Update his Username, using SteamID
 			Format(query, sizeof(query), sQuery_CheckUpdatePlayer, tablePlayer, pName[client], SID[client]);
@@ -80,11 +80,11 @@ public void OnClientPostAdminCheck(int client)
 			gRank[client] = 0;	// GangRank
 			gVIP[client] = 0;	// VIP
 			
-			PrintToServer("[Database] SQL-SUCCESS[001]: Insert information for player %s.", pName[client]);
+			PrintToServer("[Database] SQL-SUCCESS[001]: Insert information for player %N.", client);
 			
 			if(querySend == null)
 			{
-				PrintToServer("[Database] SQL-ERROR[002]: Failed to insert information for player %s.", pName[client]);
+				PrintToServer("[Database] SQL-ERROR[002]: Failed to insert information for player %N.", client);
 			}
 		}
 		
@@ -108,7 +108,7 @@ public void OnClientPostAdminCheck(int client)
 			SQL_FetchString(querySend, 0, gName[client], sizeof(gName));	// GangName
 			gLevel[client] = SQL_FetchInt(querySend, 1);	// GangLevel
 			
-			PrintToServer("[Database] SQL-SUCCESS[002]: Gathered gang information for player %s.", pName[client]);
+			PrintToServer("[Database] SQL-SUCCESS[002]: Gathered gang information for player %N.", client);
 		}
 	}
 }
@@ -122,10 +122,7 @@ public Action Event_OnPlayerTeam(Handle event, const char[] name, bool dontBroad
 	{
 		if(GetClientTeam(client) == 0)	// Spectator
 		{
-			char NameOfPlayer[70];
-			
-			GetClientName(client, NameOfPlayer, sizeof(NameOfPlayer));
-			PrintToServer("[CHECKING] Cannot update Clients ClanTag for Player: %s", NameOfPlayer);
+			PrintToServer("[CHECKING] Cannot update Clients ClanTag for Player: %N", client);
 			CreateTimer(5.0, TimerCB_RetryLoadClient, GetClientUserId(client), TIMER_FLAG_NO_MAPCHANGE);
 		}
 		
@@ -156,10 +153,7 @@ public Action TimerCB_RetryLoadClient(Handle hTimer, any iUserID)
 	
 	if(GetClientTeam(client) == 0)	// Spectator
 	{
-		char NameOfPlayer[70];
-		
-		GetClientName(client, NameOfPlayer, sizeof(NameOfPlayer));
-		PrintToServer("[CHECKING] Cannot update Clients ClanTag for Player: %s", NameOfPlayer);
+		PrintToServer("[CHECKING] Cannot update Clients ClanTag for Player: %N", client);
 		CreateTimer(5.0, TimerCB_RetryLoadClient, GetClientUserId(client), TIMER_FLAG_NO_MAPCHANGE);
 	}
 	

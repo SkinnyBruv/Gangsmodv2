@@ -60,7 +60,7 @@ stock bool ObtainPlayerInformation(int I_Client)
 		gRank[client] = SQL_FetchInt(querySend, 2);	// GangRank
 		gVIP[client] = SQL_FetchInt(querySend, 3);	// VIP
 		
-		PrintToServer("[Database] SQL-SUCCESS[000]: Gathered information for player %s.", pName[client]);
+		PrintToServer("[Database] SQL-SUCCESS[000]: Gathered information for player %N.", client);
 		
 		// Update his Username, using SteamID
 		Format(query2, sizeof(query2), sQuery_CheckUpdatePlayer, tablePlayer, pName[client], SID[client]);
@@ -68,7 +68,7 @@ stock bool ObtainPlayerInformation(int I_Client)
 		
 		if(querySend == INVALID_HANDLE)
 		{
-			PrintToServer("[Database] SQL-ERROR[001]: Failed to update information for player %s.", pName[client]);
+			PrintToServer("[Database] SQL-ERROR[001]: Failed to update information for player %N.", client);
 		}
 	}
 	else
@@ -83,11 +83,11 @@ stock bool ObtainPlayerInformation(int I_Client)
 		gRank[client] = 0;	// GangRank
 		gVIP[client] = 0;	// VIP
 		
-		PrintToServer("[Database] SQL-SUCCESS[000]: Insert information for player %s.", pName[client]);
+		PrintToServer("[Database] SQL-SUCCESS[000]: Insert information for player %N.", client);
 		
 		if(querySend == INVALID_HANDLE)
 		{
-			PrintToServer("[Database] SQL-ERROR[002]: Failed to insert information for player %s.", pName[client]);
+			PrintToServer("[Database] SQL-ERROR[002]: Failed to insert information for player %N.", client);
 		}
 	}
 }

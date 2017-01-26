@@ -64,13 +64,11 @@ public Action Cmd_SetVIP(int client, int args)
 		return Plugin_Handled;
 	}*/
 	
-	char CMDName[70];
-	GetClientName(client, CMDName, sizeof(CMDName));
 	
 	SetTargetVIP(target);
 	
 	PrintToChat(client, "'%s' has now been set to a FNG VIP Member.", target);
-	PrintToServer("'%s' has now been set to a FNG VIP Member by admin: '%s'.", target, CMDName);
+	PrintToServer("'%s' has now been set to a FNG VIP Member by admin: '%N'.", target, client);
 	
 	return Plugin_Handled;
 	

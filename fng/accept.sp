@@ -25,11 +25,9 @@ public Action Cmd_AcceptGang(int client, int args)
 	}
 	
 	// Variable Ints
-	char username[MAX_NAME_LENGTH];
 	char gangName[64];
 	
 	GetGangName(gInvite[client], gangName, sizeof(gangName));
-	GetClientName(client, username, sizeof(username));
 	
 	GID[client] = gInvite[client];
 	gInvite[client] = 0;
@@ -56,11 +54,11 @@ public Action Cmd_AcceptGang(int client, int args)
 	
 	CS_SetClientClanTag(client, gangName);
 	
-	for(int i=1;i<=MaxClients;i++)
+	for(int i = 1; i <= MaxClients; i++)
 	{
 		if(GID[i] == GID[client])
 		{
-			PrintToChat(i, "\x01[SM]\x04 %s\x01 has joined your gang!", username);
+			PrintToChat(i, "\x01[SM]\x04 %N\x01 has joined your gang!", client);
 		}
 	}
 	return Plugin_Handled;

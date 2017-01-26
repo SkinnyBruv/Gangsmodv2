@@ -53,7 +53,6 @@ public Action Cmd_InviteGang(int client, int args)
 	}
 	
 	char arg1[MAX_NAME_LENGTH];
-	char username[MAX_NAME_LENGTH];
 	
 	GetCmdArg(1, arg1, sizeof(arg1));
 	int targ = FindTarget(client, arg1, true, false);
@@ -73,10 +72,9 @@ public Action Cmd_InviteGang(int client, int args)
 	char gangName[64];
 	
 	GetGangName(GID[client], gangName, sizeof(gangName));
-	GetClientName(client, username, sizeof(username));
 	gInvite[targ] = GID[client];// Invite target
 	
-	PrintToChat(targ, "\x01[SM]\x04 %s\x01 invited you to %s: Please '!accept' or '!deny' the gang invitation.", username, gangName);
+	PrintToChat(targ, "\x01[SM]\x04 %N\x01 invited you to %s: Please '!accept' or '!deny' the gang invitation.", client, gangName);
 	PrintToChat(client, "\x01[SM]\x04 Target invited.");
 	return Plugin_Handled;
 }

@@ -16,11 +16,9 @@ public Action Cmd_DenyGang(int client, int args)
 		return Plugin_Handled;
 	}
 	
-	char username[MAX_NAME_LENGTH];
 	char gangName[64];
 	
 	GetGangName(gInvite[client], gangName, sizeof(gangName));
-	GetClientName(client, username, sizeof(username));
 	
 	PrintToChat(client, "\x01[SM]\x04 Denied request from %s.", gangName);
 	
@@ -28,7 +26,7 @@ public Action Cmd_DenyGang(int client, int args)
 	{
 		if(GID[i] == gInvite[client])
 		{
-			PrintToChat(i, "\x01[SM]\x04 %s\x01 denied your gang request.", username);
+			PrintToChat(i, "\x01[SM]\x04 %N\x01 denied your gang request.", client);
 		}
 	}
 	
