@@ -8,7 +8,7 @@
 
 
 /* Accept Gang Invitation */
-public Action:Cmd_AcceptGang(client, args)
+public Action Cmd_AcceptGang(int client, int args)
 {
 	GetClientIndexes(client);
 	
@@ -25,8 +25,8 @@ public Action:Cmd_AcceptGang(client, args)
 	}
 	
 	// Variable Ints
-	new String:username[MAX_NAME_LENGTH];
-	new String:gangName[64];
+	char username[MAX_NAME_LENGTH];
+	char gangName[64];
 	
 	GetGangName(gInvite[client], gangName, sizeof(gangName));
 	GetClientName(client, username, sizeof(username));
@@ -38,9 +38,9 @@ public Action:Cmd_AcceptGang(client, args)
 	GetConVarTable(TABLE_PLAYER);
 	GetConVarTable(TABLE_GANG);
 	
-	new String:query[200];
-	new Handle:queryH = INVALID_HANDLE;
-	new currentCount;
+	char query[200];
+	Handle queryH = INVALID_HANDLE;
+	int currentCount;
 	
 	currentCount = RetrieveInt(TABLE_GANG, "membercount", GID[client]);
 	
@@ -56,7 +56,7 @@ public Action:Cmd_AcceptGang(client, args)
 	
 	CS_SetClientClanTag(client, gangName);
 	
-	for(new i=1;i<=MaxClients;i++)
+	for(int i=1;i<=MaxClients;i++)
 	{
 		if(GID[i] == GID[client])
 		{

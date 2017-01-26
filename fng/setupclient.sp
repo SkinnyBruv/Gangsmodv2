@@ -25,7 +25,7 @@
 
 
 /* Setup Client */
-public OnClientPostAdminCheck(client)
+public void OnClientPostAdminCheck(int client)
 {
 	//////////////////////////////////////////////////////////////////////////////////ONE//////////////////////////////////////////////////////////////////////////////////
 	/****************************
@@ -41,8 +41,8 @@ public OnClientPostAdminCheck(client)
 	{
 		/* These Variables must be Local */
 		// Setup the information needed to send Queries to MYSQL
-		new String:query[255];
-		new Handle:querySend = INVALID_HANDLE;
+		char query[255];
+		Handle querySend = INVALID_HANDLE;
 		
 		// Obtain SteamID, Players Name and MySQL Table
 		GetClientName(client, pName[client], sizeof(pName));	// Gets Players Name
@@ -113,16 +113,16 @@ public OnClientPostAdminCheck(client)
 	}
 }
 
-public Action:Event_OnPlayerTeam(Handle:event, const String:name[], bool:dontBroadcast)
+public Action Event_OnPlayerTeam(Handle event, const char[] name, bool dontBroadcast)
 {
-	new client = GetClientOfUserId(GetEventInt(event, "userid"));
+	int client = GetClientOfUserId(GetEventInt(event, "userid"));
 	
 	// If it IS NOT a fake client, then Check to see if the Player is in the Database!
 	if (IsValidClient(client) == true)
 	{
 		if(GetClientTeam(client) == 0)	// Spectator
 		{
-			new String:NameOfPlayer[70];
+			char NameOfPlayer[70];
 			
 			GetClientName(client, NameOfPlayer, sizeof(NameOfPlayer));
 			PrintToServer("[CHECKING] Cannot update Clients ClanTag for Player: %s", NameOfPlayer);
@@ -156,7 +156,7 @@ public Action TimerCB_RetryLoadClient(Handle hTimer, any iUserID)
 	
 	if(GetClientTeam(client) == 0)	// Spectator
 	{
-		new String:NameOfPlayer[70];
+		char NameOfPlayer[70];
 		
 		GetClientName(client, NameOfPlayer, sizeof(NameOfPlayer));
 		PrintToServer("[CHECKING] Cannot update Clients ClanTag for Player: %s", NameOfPlayer);
@@ -180,10 +180,10 @@ public Action TimerCB_RetryLoadClient(Handle hTimer, any iUserID)
 	}
 }
 
-UpdateClanTag(client)
+void UpdateClanTag(int client)
 {
-	new String:query[255];
-	new Handle:querySend = INVALID_HANDLE;
+	char query[255];
+	Handle querySend = INVALID_HANDLE;
 	//decl String:szTag[36];
 	//new String:clantag;
 	

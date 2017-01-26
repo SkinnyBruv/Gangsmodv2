@@ -6,7 +6,7 @@
 		Create a Gang 		- Allows a user to create a gang by paying money.
 */
 
-public Action:Cmd_CreateGang(client, args)
+public Action Cmd_CreateGang(int client, int args)
 {
 	//ReplyToCommand(client, "Sorry only VIP's are allowed to create gangs!");
 	if(args != 1)
@@ -31,9 +31,9 @@ public Action:Cmd_CreateGang(client, args)
 			PrintToChat(client, "[FNG] You may proceed.");
 			
 			// Setup MySQL
-			new String:query[200];
-			new Handle:querySend = INVALID_HANDLE;
-			new String:arg1[80];
+			char query[200];
+			Handle querySend = INVALID_HANDLE;
+			char arg1[80];
 			
 			// Obtain Table Values
 			GetConVarTable(TABLE_PLAYER);	//Usually fngls
@@ -53,7 +53,7 @@ public Action:Cmd_CreateGang(client, args)
 			//SQL_TQuery(dbConn, SQL_GetClientIndexesCallback, query, client, DBPrio_High);
 			querySend = SQL_Query(dbConn, query);
 			
-			new String:clientname[200];
+			char clientname[200];
 			GetClientName(client, clientname, sizeof(clientname));
 			
 			if(SQL_FetchRow(querySend))
@@ -94,7 +94,7 @@ public Action:Cmd_CreateGang(client, args)
 	
 	GetClientAuthId(client, AuthId_Steam3, SID, sizeof(SID));
 	
-	new String:error[120];
+	char error[120];
 	SQL_GetError(dbConn, error, sizeof(error));
 	PrintToServer("Attempted to retrieve an error: %s", error);
 	

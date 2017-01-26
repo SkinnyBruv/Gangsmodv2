@@ -113,7 +113,7 @@
 
 /* We like semicolons */
 #pragma semicolon 1
-
+#pragma newdecls required // force new syntax
 
 /* Query Strings */
 char sQuery_CheckUpdatePlayer[] = "UPDATE %s SET name='%s' WHERE steamid='%s';";														// SQL_CheckPlayer - sqls.sp
@@ -152,8 +152,8 @@ char sQuery_SetVip[] = "UPDATE %s SET vip = '1' WHERE steamid = '%s';";
 
 
 /* Handles */
-new Handle:dbConn = INVALID_HANDLE;	// Database Connection Handle
-new String:dbError[255];	// Database Error Handle
+Handle dbConn = INVALID_HANDLE;	// Database Connection Handle
+char dbError[255];	// Database Error Handle
 
 
 /* Database Setups */
@@ -178,7 +178,7 @@ new String:dbError[255];	// Database Error Handle
 ****************************/
 
 /* Temporary Values to Store for Fixing CreateGang.sp */
-//new String:arg1Temp[255];
+//char arg1Temp[255];
 
 
 /* Setups for Levels % Experience 	*/
@@ -196,21 +196,21 @@ char pName[MAXPLAYERS + 1][MAX_NAME_LENGTH];			//	globalvariable	-	string		-	Pla
 //new gRank[255];	// GangRank
 //new gName[255];	// GangName
 //new gVIP[255];		// VIP
-new gInvite[255];	// GangInvite
+int gInvite[255];	// GangInvite
 
 
 /* ConVars Setup */
-new Handle:cv_dbConnTable = INVALID_HANDLE;
-new String:tb_connValue[70];	//tb = Table
-new Handle:cv_dbPlayerTable = INVALID_HANDLE;
-new String:tablePlayer[70];	//tb = Table
-new Handle:cv_dbGangTable = INVALID_HANDLE;
-new String:tableGang[70];	//tb = Table
+Handle cv_dbConnTable = INVALID_HANDLE;
+char tb_connValue[70];	//tb = Table
+Handle cv_dbPlayerTable = INVALID_HANDLE;
+char tablePlayer[70];	//tb = Table
+Handle cv_dbGangTable = INVALID_HANDLE;
+char tableGang[70];	//tb = Table
 
-//new Handle:cv_SetVIP = INVALID_HANDLE;
+//Handle cv_SetVIP = INVALID_HANDLE;
 
-new Handle:cv_jb_gangs = INVALID_HANDLE;
-new Handle:cv_jb_gangs_version = INVALID_HANDLE;
+Handle cv_jb_gangs = INVALID_HANDLE;
+Handle cv_jb_gangs_version = INVALID_HANDLE;
 
 
 /* MYSQL Table Definitions */
@@ -218,7 +218,7 @@ new Handle:cv_jb_gangs_version = INVALID_HANDLE;
 #define TABLE_PLAYER		2
 #define TABLE_GANG		3
 
-//new Handle:cv_pCreateCost = INVALID_HANDLE;
+//Handle cv_pCreateCost = INVALID_HANDLE;
 
 
 /* File Includes */
@@ -239,7 +239,7 @@ new Handle:cv_jb_gangs_version = INVALID_HANDLE;
 
 
 /* Plugin Info */
-public Plugin:myinfo = 
+public Plugin myinfo = 
 {
 	name = PLUGIN_NAME,
 	author = PLUGIN_AUTHOR,
@@ -249,7 +249,7 @@ public Plugin:myinfo =
 }
 
 
-public OnPluginStart()
+public void OnPluginStart()
 {
 	/* Translations */
 	LoadTranslations("common.phrases");

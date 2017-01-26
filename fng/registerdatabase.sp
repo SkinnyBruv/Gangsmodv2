@@ -25,7 +25,7 @@
 
 
 /* Register Database */
-public OnMapStart()
+public void OnMapStart()
 {
 	/* Database Connection */
 	GetConVarTable(TABLE_DBCN);

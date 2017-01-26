@@ -8,7 +8,7 @@
 
 
 /* Leave Gang */
-public Action:Cmd_LeaveGang(client, args)
+public Action Cmd_LeaveGang(int client, int args)
 {
 	if(GID[client] <= 0)
 	{
@@ -16,7 +16,7 @@ public Action:Cmd_LeaveGang(client, args)
 		return Plugin_Handled;
 	}
 	
-	new bool:onlyMember = false;
+	bool onlyMember = false;
 	
 	if(RetrieveInt(TABLE_GANG, "membercount", GID[client]) <= 1)
 	{
@@ -30,8 +30,8 @@ public Action:Cmd_LeaveGang(client, args)
 	}
 	
 	//new slot = FindGangSlot(client);
-	new String:query[200];
-	new Handle:queryH = INVALID_HANDLE;
+	char query[200];
+	Handle queryH = INVALID_HANDLE;
 	
 	GetConVarTable(TABLE_GANG);
 	
@@ -66,7 +66,7 @@ public Action:Cmd_LeaveGang(client, args)
 	
 	else
 	{
-		new currentCount = 0;
+		int currentCount = 0;
 		currentCount = RetrieveInt(TABLE_GANG, "membercount", GID[client]);
 		
 		Format(query, sizeof(query), sQuery_UpdateLeave, tableGang, (currentCount - 1), GID[client]);

@@ -27,7 +27,7 @@
 
 
 /* Create Gang */
-public Action:Cmd_SetVIP(client, args)
+public Action Cmd_SetVIP(int client, int args)
 {
 	if (args < 1)
 	{
@@ -40,15 +40,15 @@ public Action:Cmd_SetVIP(client, args)
 		return Plugin_Handled;
 	}
 	
-	new String:arg[MAX_NAME_LENGTH];
+	char arg[MAX_NAME_LENGTH];
 	
 	GetCmdArg(1, arg, sizeof(arg));
 	
-	new targets[1];	// When not target multiple players, COMMAND_FILTER_NO_MULTI
-	new String:target_name[MAX_TARGET_LENGTH];
-	new bool:tn_is_ml;
+	int targets[1];	// When not target multiple players, COMMAND_FILTER_NO_MULTI
+	char target_name[MAX_TARGET_LENGTH];
+	bool tn_is_ml;
 	
-	new targets_found = ProcessTargetString(arg, client, targets, sizeof(targets), COMMAND_FILTER_NO_IMMUNITY|COMMAND_FILTER_NO_MULTI, target_name, sizeof(target_name), tn_is_ml);
+	int targets_found = ProcessTargetString(arg, client, targets, sizeof(targets), COMMAND_FILTER_NO_IMMUNITY|COMMAND_FILTER_NO_MULTI, target_name, sizeof(target_name), tn_is_ml);
 	
 	if (targets_found <= COMMAND_TARGET_NONE)	// No target found or error
 	{
@@ -56,7 +56,7 @@ public Action:Cmd_SetVIP(client, args)
 		return Plugin_Handled;
 	}
 	
-	new target = targets[0];	// Get that one player from list
+	int target = targets[0];	// Get that one player from list
 	
 	/*if (target == client)	// Command used to itself
 	{
@@ -64,7 +64,7 @@ public Action:Cmd_SetVIP(client, args)
 		return Plugin_Handled;
 	}*/
 	
-	new String:CMDName[70];
+	char CMDName[70];
 	GetClientName(client, CMDName, sizeof(CMDName));
 	
 	SetTargetVIP(target);
