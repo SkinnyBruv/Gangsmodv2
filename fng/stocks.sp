@@ -90,6 +90,8 @@ stock bool ObtainPlayerInformation(int I_Client)
 			PrintToServer("[Database] SQL-ERROR[002]: Failed to insert information for player %N.", client);
 		}
 	}
+	
+	delete querySend;
 }
 
 stock bool ObtainPlayersGangInformation(int I_Client)
@@ -137,6 +139,8 @@ stock bool ObtainPlayersGangInformation(int I_Client)
 	{
 		PrintToServer("[Database] SQL-ERROR[001]: Failed to gather gang information for player %s.", pName[client]);
 	}
+	
+	delete querySend;
 }
 
 stock bool GetClientIndexes(int I_Client)
@@ -150,7 +154,7 @@ stock bool GetClientIndexes(int I_Client)
 	/* Continue on with GetClientIndexes */
 	
 	char query[255];
-	Handle querySend = INVALID_HANDLE;
+	Handle querySend = null;
 	
 	GetClientAuthId(client, AuthId_Steam3, SID[client], sizeof(SID));
 	GetConVarTable(TABLE_PLAYER);
@@ -172,6 +176,8 @@ stock bool GetClientIndexes(int I_Client)
 	{
 		PrintToServer("[Database] SQL-ERROR[003]: Failed to gather information for player: %s.", client);
 	}
+	
+	delete querySend;
 }
 
 stock bool SetTargetVIP(int target)
@@ -207,7 +213,7 @@ stock void GetGangName(int gangID, char[] name, int maxlength)
 {
 	char temp[64]; 
 	char query[200];
-	Handle queryH = INVALID_HANDLE;
+	Handle queryH = null;
 	
 	Format(query, sizeof(query), sQuery_GetGangName, name);
 	queryH = SQL_Query(dbConn, query);
@@ -227,7 +233,7 @@ stock void GetGangName(int gangID, char[] name, int maxlength)
 stock int RetrieveInt(int tableval, const char[] value, int condition, int extra=-1)
 {
 	char query[200];
-	Handle queryH = INVALID_HANDLE;
+	Handle queryH = null;
 	char condKey[48];
 	char temp[100];
 	
@@ -258,19 +264,21 @@ stock int RetrieveInt(int tableval, const char[] value, int condition, int extra
 		
 		if(SQL_FetchRow(queryH))
 		{
-			return SQL_FetchInt(queryH, 0);
+			int returnValue = SQL_FetchInt(queryH, 0);
 		}
-		
 		else
 		{
 			PrintToServer("[DrugMoney] SQL-ERROR[005]: Could not FetchRow() with variables: %s, %s, %s.", tableval, value, temp);
 		}
+		delete queryH;
+		return returnValue;
 	}
 	
 	else
 	{//If we're going to change data instead of retrieve.
 		Format(query, sizeof(query), sQuery_RetrieveInt2, tablePlayer, value, extra, condKey, temp);
 		queryH = SQL_Query(dbConn, query);
+		delete queryH;
 	}
 	return -1;
 }

@@ -49,6 +49,7 @@ public Action Cmd_AcceptGang(int client, int args)
 	{
 		PrintToServer("[DrugMoney] SQL-ERROR: Could not update membercount for gangid %d.", GID[client]);
 	}
+	delete queryH;
 	
 	PrintToChat(client, "\x01[SM]\x04 Successfully joined %s!", gangName);
 	

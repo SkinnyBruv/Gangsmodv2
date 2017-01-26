@@ -35,7 +35,8 @@ public Action Cmd_InviteGang(int client, int args)
 			GID[client] = SQL_FetchInt(querySend, 0);
 			gRank[client] = SQL_FetchInt(querySend, 1);
 		}
-		
+		delete querySend;
+
 		// GangID = 0
 		if(GID[client] <= 0)
 		{	

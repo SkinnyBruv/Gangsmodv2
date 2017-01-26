@@ -115,5 +115,7 @@ public Action Cmd_CreateGang(int client, int args)
 	/*
 	
 	*/
+	delete querySend;
+
 	return Plugin_Handled;
 }

@@ -62,6 +62,8 @@ public Action Cmd_LeaveGang(int client, int args)
 			gGID[i] = gGID[i + 1];
 			gLevel[i] = gLevel[i + 1];
 		}*/
+		delete queryH;
+
 	}
 	
 	else
@@ -79,6 +81,7 @@ public Action Cmd_LeaveGang(int client, int args)
 		PrintToChat(client, "\x01[SM]\x04 Successfully left gang.");
 		
 		CS_SetClientClanTag(client, "");
+		delete queryH;
 	}
 	return Plugin_Handled;
 }
