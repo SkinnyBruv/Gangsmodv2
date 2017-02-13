@@ -8,7 +8,7 @@
 
 
 /* See whose Online */
-public Action:Cmd_Online(client, args)
+public Action Cmd_Online(int client, int args)
 {
 	if(GID[client] <= 0)
 	{
@@ -16,17 +16,17 @@ public Action:Cmd_Online(client, args)
 		return Plugin_Handled;
 	}
 	
-	new String:gangName[64];
+	char gangName[64];
 	
 	GetGangName(GID[client], gangName, sizeof(gangName));
 	
-	new Handle:menu = CreateMenu(Menu_Online);
-	new bool:anyOnline = false;
-	new String:username[MAX_NAME_LENGTH];
+	Handle menu = CreateMenu(Menu_Online);
+	bool anyOnline = false;
+	char  username[MAX_NAME_LENGTH];
 	
 	SetMenuTitle(menu, gangName);
 	
-	for(new i=1;i<=MaxClients;i++)
+	for(int i=1;i<=MaxClients;i++)
 	{
 		if(GID[i] == GID[client] && i != client)
 		{
@@ -46,7 +46,7 @@ public Action:Cmd_Online(client, args)
 	return Plugin_Handled;
 }
 
-public Menu_Online(Handle:menu, MenuAction:action, param1, param2)
+public int Menu_Online(Handle menu, MenuAction action, int param1, int param2)
 {
 	CloseHandle(menu);
 	return;

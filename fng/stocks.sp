@@ -38,9 +38,9 @@ stock bool ObtainPlayerInformation(int I_Client)
 	
 	/* These Variables must be Local */
 	// Setup the information needed to send Queries to MYSQL
-	new String:query[255];
-	new String:query2[255];
-	new Handle:querySend = INVALID_HANDLE;
+	char query[255];
+	char query2[255];
+	Handle querySend = INVALID_HANDLE;
 	
 	// Obtain SteamID, Players Name and MySQL Table
 	GetClientName(client, pName[client], sizeof(pName));	// Gets Players Name
@@ -60,7 +60,7 @@ stock bool ObtainPlayerInformation(int I_Client)
 		gRank[client] = SQL_FetchInt(querySend, 2);	// GangRank
 		gVIP[client] = SQL_FetchInt(querySend, 3);	// VIP
 		
-		PrintToServer("[Database] SQL-SUCCESS[000]: Gathered information for player %s.", pName[client]);
+		PrintToServer("[Database] SQL-SUCCESS[000]: Gathered information for player %N.", client);
 		
 		// Update his Username, using SteamID
 		Format(query2, sizeof(query2), sQuery_CheckUpdatePlayer, tablePlayer, pName[client], SID[client]);
@@ -68,7 +68,7 @@ stock bool ObtainPlayerInformation(int I_Client)
 		
 		if(querySend == INVALID_HANDLE)
 		{
-			PrintToServer("[Database] SQL-ERROR[001]: Failed to update information for player %s.", pName[client]);
+			PrintToServer("[Database] SQL-ERROR[001]: Failed to update information for player %N.", client);
 		}
 	}
 	else
@@ -83,13 +83,15 @@ stock bool ObtainPlayerInformation(int I_Client)
 		gRank[client] = 0;	// GangRank
 		gVIP[client] = 0;	// VIP
 		
-		PrintToServer("[Database] SQL-SUCCESS[000]: Insert information for player %s.", pName[client]);
+		PrintToServer("[Database] SQL-SUCCESS[000]: Insert information for player %N.", client);
 		
 		if(querySend == INVALID_HANDLE)
 		{
-			PrintToServer("[Database] SQL-ERROR[002]: Failed to insert information for player %s.", pName[client]);
+			PrintToServer("[Database] SQL-ERROR[002]: Failed to insert information for player %N.", client);
 		}
 	}
+	
+	delete querySend;
 }
 
 stock bool ObtainPlayersGangInformation(int I_Client)
@@ -111,9 +113,9 @@ stock bool ObtainPlayersGangInformation(int I_Client)
 	
 	/* These Variables must be Local */
 	// Setup the information needed to send Queries to MYSQL
-	new String:query[255];
-	new String:query2[255];
-	new Handle:querySend = INVALID_HANDLE;
+	char query[255];
+	char query2[255];
+	Handle querySend = INVALID_HANDLE;
 	
 	// Obtain SteamID, Players Name and MySQL Table
 	GetClientName(client, pName[client], sizeof(pName));	// Gets Players Name
@@ -137,6 +139,8 @@ stock bool ObtainPlayersGangInformation(int I_Client)
 	{
 		PrintToServer("[Database] SQL-ERROR[001]: Failed to gather gang information for player %s.", pName[client]);
 	}
+	
+	delete querySend;
 }
 
 stock bool GetClientIndexes(int I_Client)
@@ -149,8 +153,8 @@ stock bool GetClientIndexes(int I_Client)
 	
 	/* Continue on with GetClientIndexes */
 	
-	new String:query[255];
-	new Handle:querySend = INVALID_HANDLE;
+	char query[255];
+	Handle querySend = null;
 	
 	GetClientAuthId(client, AuthId_Steam3, SID[client], sizeof(SID));
 	GetConVarTable(TABLE_PLAYER);
@@ -172,11 +176,13 @@ stock bool GetClientIndexes(int I_Client)
 	{
 		PrintToServer("[Database] SQL-ERROR[003]: Failed to gather information for player: %s.", client);
 	}
+	
+	delete querySend;
 }
 
-stock bool SetTargetVIP(any:target)
+stock bool SetTargetVIP(int target)
 {
-	new String:query[255];
+	char query[255];
 	
 	GetClientAuthId(target, AuthId_Steam3, SID[target], sizeof(SID));
 	GetConVarTable(TABLE_PLAYER);
@@ -185,7 +191,7 @@ stock bool SetTargetVIP(any:target)
 	SQL_TQuery(dbConn, SQL_dbDoNothing, query, target, DBPrio_High);
 }
 
-stock bool GetConVarTable(any:tableval)
+stock bool GetConVarTable(int tableval)
 {
 	if(tableval == TABLE_DBCN)
 	{
@@ -203,11 +209,11 @@ stock bool GetConVarTable(any:tableval)
 	}
 }
 
-stock GetGangName(any:gangID, String:name[], maxlength)
+stock void GetGangName(int gangID, char[] name, int maxlength)
 {
-	new String:temp[64]; 
-	new String:query[200];
-	new Handle:queryH = INVALID_HANDLE;
+	char temp[64]; 
+	char query[200];
+	Handle queryH = null;
 	
 	Format(query, sizeof(query), sQuery_GetGangName, name);
 	queryH = SQL_Query(dbConn, query);
@@ -224,12 +230,12 @@ stock GetGangName(any:gangID, String:name[], maxlength)
 	}
 }
 
-stock RetrieveInt(any:tableval, const String:value[], any:condition, any:extra=-1)
+stock int RetrieveInt(int tableval, const char[] value, int condition, int extra=-1)
 {
-	new String:query[200];
-	new Handle:queryH = INVALID_HANDLE;
-	new String:condKey[48];
-	new String:temp[100];
+	char query[200];
+	Handle queryH = null;
+	char condKey[48];
+	char temp[100];
 	
 	if(tableval == TABLE_PLAYER)
 	{//Users
@@ -258,19 +264,21 @@ stock RetrieveInt(any:tableval, const String:value[], any:condition, any:extra=-
 		
 		if(SQL_FetchRow(queryH))
 		{
-			return SQL_FetchInt(queryH, 0);
+			int returnValue = SQL_FetchInt(queryH, 0);
 		}
-		
 		else
 		{
 			PrintToServer("[DrugMoney] SQL-ERROR[005]: Could not FetchRow() with variables: %s, %s, %s.", tableval, value, temp);
 		}
+		delete queryH;
+		return returnValue;
 	}
 	
 	else
 	{//If we're going to change data instead of retrieve.
 		Format(query, sizeof(query), sQuery_RetrieveInt2, tablePlayer, value, extra, condKey, temp);
 		queryH = SQL_Query(dbConn, query);
+		delete queryH;
 	}
 	return -1;
 }

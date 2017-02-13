@@ -8,7 +8,7 @@
 
 
 /* Accept Gang Invitation */
-public Action:Cmd_AcceptGang(client, args)
+public Action Cmd_AcceptGang(int client, int args)
 {
 	GetClientIndexes(client);
 	
@@ -25,11 +25,9 @@ public Action:Cmd_AcceptGang(client, args)
 	}
 	
 	// Variable Ints
-	new String:username[MAX_NAME_LENGTH];
-	new String:gangName[64];
+	char gangName[64];
 	
 	GetGangName(gInvite[client], gangName, sizeof(gangName));
-	GetClientName(client, username, sizeof(username));
 	
 	GID[client] = gInvite[client];
 	gInvite[client] = 0;
@@ -38,29 +36,30 @@ public Action:Cmd_AcceptGang(client, args)
 	GetConVarTable(TABLE_PLAYER);
 	GetConVarTable(TABLE_GANG);
 	
-	new String:query[200];
-	new Handle:queryH = INVALID_HANDLE;
-	new currentCount;
+	char query[200];
+	Handle queryH = null;
+	int currentCount;
 	
 	currentCount = RetrieveInt(TABLE_GANG, "membercount", GID[client]);
 	
 	Format(query, sizeof(query), sQuery_AcceptInvite, tableGang, (currentCount + 1), GID[client]);
 	queryH = SQL_Query(dbConn, query);
 	
-	if(queryH == INVALID_HANDLE)
+	if(queryH == null)
 	{
 		PrintToServer("[DrugMoney] SQL-ERROR: Could not update membercount for gangid %d.", GID[client]);
 	}
+	delete queryH;
 	
 	PrintToChat(client, "\x01[SM]\x04 Successfully joined %s!", gangName);
 	
 	CS_SetClientClanTag(client, gangName);
 	
-	for(new i=1;i<=MaxClients;i++)
+	for(int i = 1; i <= MaxClients; i++)
 	{
 		if(GID[i] == GID[client])
 		{
-			PrintToChat(i, "\x01[SM]\x04 %s\x01 has joined your gang!", username);
+			PrintToChat(i, "\x01[SM]\x04 %N\x01 has joined your gang!", client);
 		}
 	}
 	return Plugin_Handled;

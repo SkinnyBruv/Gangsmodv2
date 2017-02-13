@@ -25,7 +25,7 @@
 
 
 /* Setup Client */
-public OnClientPostAdminCheck(client)
+public void OnClientPostAdminCheck(int client)
 {
 	//////////////////////////////////////////////////////////////////////////////////ONE//////////////////////////////////////////////////////////////////////////////////
 	/****************************
@@ -41,8 +41,8 @@ public OnClientPostAdminCheck(client)
 	{
 		/* These Variables must be Local */
 		// Setup the information needed to send Queries to MYSQL
-		new String:query[255];
-		new Handle:querySend = INVALID_HANDLE;
+		char query[255];
+		Handle querySend = null;
 		
 		// Obtain SteamID, Players Name and MySQL Table
 		GetClientName(client, pName[client], sizeof(pName));	// Gets Players Name
@@ -63,7 +63,7 @@ public OnClientPostAdminCheck(client)
 			gRank[client] = SQL_FetchInt(querySend, 2);	// GangRank
 			gVIP[client] = SQL_FetchInt(querySend, 3);	// VIP
 			
-			PrintToServer("[Database] SQL-SUCCESS[000]: Gathered information for player %s.", pName[client]);
+			PrintToServer("[Database] SQL-SUCCESS[000]: Gathered information for player %N.", client);
 			
 			// Update his Username, using SteamID
 			Format(query, sizeof(query), sQuery_CheckUpdatePlayer, tablePlayer, pName[client], SID[client]);
@@ -80,11 +80,11 @@ public OnClientPostAdminCheck(client)
 			gRank[client] = 0;	// GangRank
 			gVIP[client] = 0;	// VIP
 			
-			PrintToServer("[Database] SQL-SUCCESS[001]: Insert information for player %s.", pName[client]);
+			PrintToServer("[Database] SQL-SUCCESS[001]: Insert information for player %N.", client);
 			
-			if(querySend == INVALID_HANDLE)
+			if(querySend == null)
 			{
-				PrintToServer("[Database] SQL-ERROR[002]: Failed to insert information for player %s.", pName[client]);
+				PrintToServer("[Database] SQL-ERROR[002]: Failed to insert information for player %N.", client);
 			}
 		}
 		
@@ -108,24 +108,21 @@ public OnClientPostAdminCheck(client)
 			SQL_FetchString(querySend, 0, gName[client], sizeof(gName));	// GangName
 			gLevel[client] = SQL_FetchInt(querySend, 1);	// GangLevel
 			
-			PrintToServer("[Database] SQL-SUCCESS[002]: Gathered gang information for player %s.", pName[client]);
+			PrintToServer("[Database] SQL-SUCCESS[002]: Gathered gang information for player %N.", client);
 		}
 	}
 }
 
-public Action:Event_OnPlayerTeam(Handle:event, const String:name[], bool:dontBroadcast)
+public Action Event_OnPlayerTeam(Handle event, const char[] name, bool dontBroadcast)
 {
-	new client = GetClientOfUserId(GetEventInt(event, "userid"));
+	int client = GetClientOfUserId(GetEventInt(event, "userid"));
 	
 	// If it IS NOT a fake client, then Check to see if the Player is in the Database!
 	if (IsValidClient(client) == true)
 	{
 		if(GetClientTeam(client) == 0)	// Spectator
 		{
-			new String:NameOfPlayer[70];
-			
-			GetClientName(client, NameOfPlayer, sizeof(NameOfPlayer));
-			PrintToServer("[CHECKING] Cannot update Clients ClanTag for Player: %s", NameOfPlayer);
+			PrintToServer("[CHECKING] Cannot update Clients ClanTag for Player: %N", client);
 			CreateTimer(5.0, TimerCB_RetryLoadClient, GetClientUserId(client), TIMER_FLAG_NO_MAPCHANGE);
 		}
 		
@@ -156,10 +153,7 @@ public Action TimerCB_RetryLoadClient(Handle hTimer, any iUserID)
 	
 	if(GetClientTeam(client) == 0)	// Spectator
 	{
-		new String:NameOfPlayer[70];
-		
-		GetClientName(client, NameOfPlayer, sizeof(NameOfPlayer));
-		PrintToServer("[CHECKING] Cannot update Clients ClanTag for Player: %s", NameOfPlayer);
+		PrintToServer("[CHECKING] Cannot update Clients ClanTag for Player: %N", client);
 		CreateTimer(5.0, TimerCB_RetryLoadClient, GetClientUserId(client), TIMER_FLAG_NO_MAPCHANGE);
 	}
 	
@@ -180,10 +174,10 @@ public Action TimerCB_RetryLoadClient(Handle hTimer, any iUserID)
 	}
 }
 
-UpdateClanTag(client)
+void UpdateClanTag(int client)
 {
-	new String:query[255];
-	new Handle:querySend = INVALID_HANDLE;
+	char query[255];
+	Handle querySend = null;
 	//decl String:szTag[36];
 	//new String:clantag;
 	

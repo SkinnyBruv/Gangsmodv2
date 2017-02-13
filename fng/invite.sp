@@ -8,7 +8,7 @@
 
 
 /* Create Gang */
-public Action:Cmd_InviteGang(client, args)
+public Action Cmd_InviteGang(int client, int args)
 {	
 	// Arguments = 0
 	if(args != 1)
@@ -22,8 +22,8 @@ public Action:Cmd_InviteGang(client, args)
 	{
 		PrintToChat(client, "[SM] Lets do this");
 		
-		new String:query[255];
-		new Handle:querySend = INVALID_HANDLE;
+		char query[255];
+		Handle querySend = null;
 	
 		GetClientAuthId(client, AuthId_Steam3, SID[client], sizeof(SID));
 		
@@ -35,7 +35,8 @@ public Action:Cmd_InviteGang(client, args)
 			GID[client] = SQL_FetchInt(querySend, 0);
 			gRank[client] = SQL_FetchInt(querySend, 1);
 		}
-		
+		delete querySend;
+
 		// GangID = 0
 		if(GID[client] <= 0)
 		{	
@@ -52,11 +53,10 @@ public Action:Cmd_InviteGang(client, args)
 		return Plugin_Handled;
 	}
 	
-	new String:arg1[MAX_NAME_LENGTH];
-	new	String:username[MAX_NAME_LENGTH];
+	char arg1[MAX_NAME_LENGTH];
 	
 	GetCmdArg(1, arg1, sizeof(arg1));
-	new targ = FindTarget(client, arg1, true, false);
+	int targ = FindTarget(client, arg1, true, false);
 	
 	if(targ == -1 || targ == client)
 	{
@@ -70,13 +70,12 @@ public Action:Cmd_InviteGang(client, args)
 		return Plugin_Handled;
 	}*/
 	
-	new String:gangName[64];
+	char gangName[64];
 	
 	GetGangName(GID[client], gangName, sizeof(gangName));
-	GetClientName(client, username, sizeof(username));
 	gInvite[targ] = GID[client];// Invite target
 	
-	PrintToChat(targ, "\x01[SM]\x04 %s\x01 invited you to %s: Please '!accept' or '!deny' the gang invitation.", username, gangName);
+	PrintToChat(targ, "\x01[SM]\x04 %N\x01 invited you to %s: Please '!accept' or '!deny' the gang invitation.", client, gangName);
 	PrintToChat(client, "\x01[SM]\x04 Target invited.");
 	return Plugin_Handled;
 }

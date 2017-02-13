@@ -8,7 +8,7 @@
 
 
 /* Leave Gang */
-public Action:Cmd_LeaveGang(client, args)
+public Action Cmd_LeaveGang(int client, int args)
 {
 	if(GID[client] <= 0)
 	{
@@ -16,7 +16,7 @@ public Action:Cmd_LeaveGang(client, args)
 		return Plugin_Handled;
 	}
 	
-	new bool:onlyMember = false;
+	bool onlyMember = false;
 	
 	if(RetrieveInt(TABLE_GANG, "membercount", GID[client]) <= 1)
 	{
@@ -30,8 +30,8 @@ public Action:Cmd_LeaveGang(client, args)
 	}
 	
 	//new slot = FindGangSlot(client);
-	new String:query[200];
-	new Handle:queryH = INVALID_HANDLE;
+	char query[200];
+	Handle queryH = null;
 	
 	GetConVarTable(TABLE_GANG);
 	
@@ -40,7 +40,7 @@ public Action:Cmd_LeaveGang(client, args)
 		Format(query, sizeof(query), sQuery_LeaveGang, tableGang, GID[client]);
 		queryH = SQL_Query(dbConn, query);
 		
-		if(queryH == INVALID_HANDLE)
+		if(queryH == null)
 		{
 			PrintToServer("[DrugMoney] SQL-ERROR[006]: Failed to delete gangid row %d.", GID[client]);
 			PrintToChat(client, "[SM] Failed to delete your gang.");
@@ -62,11 +62,13 @@ public Action:Cmd_LeaveGang(client, args)
 			gGID[i] = gGID[i + 1];
 			gLevel[i] = gLevel[i + 1];
 		}*/
+		delete queryH;
+
 	}
 	
 	else
 	{
-		new currentCount = 0;
+		int currentCount = 0;
 		currentCount = RetrieveInt(TABLE_GANG, "membercount", GID[client]);
 		
 		Format(query, sizeof(query), sQuery_UpdateLeave, tableGang, (currentCount - 1), GID[client]);
@@ -79,6 +81,7 @@ public Action:Cmd_LeaveGang(client, args)
 		PrintToChat(client, "\x01[SM]\x04 Successfully left gang.");
 		
 		CS_SetClientClanTag(client, "");
+		delete queryH;
 	}
 	return Plugin_Handled;
 }

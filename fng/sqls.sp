@@ -23,7 +23,7 @@
 		January 26, 2017	- 	Project Make things Global, instead of calling MySQL names
 */
 
-public SQL_dbDoNothing(Handle:owner, Handle:hndl, const String:error[], any:errorCount)
+public void SQL_dbDoNothing(Handle owner, Handle hndl, const char[] error, any errorCount)
 {
 	if(!StrEqual(error, ""))
 	{
@@ -31,7 +31,7 @@ public SQL_dbDoNothing(Handle:owner, Handle:hndl, const String:error[], any:erro
 	}
 }
 
-public SQL_dbDoNothing1(Handle:owner, Handle:hndl, const String:error[], any:errorCount)
+public void SQL_dbDoNothing1(Handle owner, Handle hndl, const char[] error, any errorCount)
 {
 	if(!StrEqual(error, ""))
 	{
@@ -39,7 +39,7 @@ public SQL_dbDoNothing1(Handle:owner, Handle:hndl, const String:error[], any:err
 	}
 }
 
-public void SQL_GetClientIndexesCallback(Handle:owner, Handle:hndl, char[] error, int client)
+public void SQL_GetClientIndexesCallback(Handle owner, Handle hndl, char[] error, int client)
 {
 	if(SQL_FetchRow(hndl))
 	{

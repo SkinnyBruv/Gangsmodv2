@@ -95,14 +95,12 @@ public Menu_Invite(Handle:menu, MenuAction:action, param1, param2)
 		}
 		
 		new String:gangName[64];
-		new String:username[MAX_NAME_LENGTH];
 		
 		GetGangName(GID[param1], gangName, sizeof(gangName));
-		GetClientName(param1, username, sizeof(username));
 		
 		gInvite[targ] = GID[param1];// Invite target
 		
-		PrintToChat(targ, "\x01[SM]\x04 %s\x01 invited you to %s; !accept or !deny.", username, gangName);
+		PrintToChat(targ, "\x01[SM]\x04 %N\x01 invited you to %s; !accept or !deny.", param1, gangName);
 		PrintToChat(param1, "\x01[SM]\x04 Target invited.");
 	}
 	CloseHandle(menu);
@@ -240,10 +238,8 @@ public Menu_Kick(Handle:menu, MenuAction:action, client, choice)
 		}
 		
 		new String:gangName[64];
-		new String:username[MAX_NAME_LENGTH];
 		
 		GetGangName(GID[client], gangName, sizeof(gangName));
-		GetClientName(client, username, sizeof(username));
 		
 		if(gRank[targ] > 0)
 		{//Thus, kicking a co-admin out of the group. Therefore, subtract one from admin count.
@@ -251,7 +247,7 @@ public Menu_Kick(Handle:menu, MenuAction:action, client, choice)
 		}
 		GID[targ] = 0;//Reset gang variables.
 		gRank[targ] = 0;
-		PrintToChat(targ, "\x01[SM]\x04 %s\x01 has kicked you out of\x04 %s\x01.", username, gangName);
+		PrintToChat(targ, "\x01[SM]\x04 %N\x01 has kicked you out of\x04 %s\x01.", client, gangName);
 		PrintToChat(client, "\x01[SM]\x04 Target kicked.");
 	}
 	CloseHandle(menu);
